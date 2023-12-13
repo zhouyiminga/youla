@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>双击显示大图</title>
+    <style>
+        .thumbnail {
+            display: inline-block;
+            margin: 10px;
+            width: 400px;
+            height: 500px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+        }
+
+        .modal-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-content img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+    </style>
+</head>
+<body>
+<div>
+    证据备注:<br/>
+    <textarea style="width: 100%;resize: none;" class="textbox" id="reasonStrBox" readonly="readonly"></textarea>
+</div>
+<br/>
+<div>
+    <label>双击图片查看原比例证据图片</label>
+</div>
+<div id="smallImgDiv">
+</div>
+<div id="modal" class="modal">
+    <div style="text-align: center;color: white">点击空白处关闭显示大图</div>
+    <div class="modal-content">
+        <img id="modal-image" src="" alt="Modal Image">
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        // 获取查询字符串部分
+        var queryString = window.location.search;
+
+        // 创建 URLSearchParams 对象
+        var searchParams = new URLSearchParams(queryString);
+        var roleId = searchParams.get('roleId');
+        console.log("roleId:" + roleId);
+        // var imgArr = new Array(3);
+        // imgArr[0] = "3`A4@@S4J07SKP(6~[BPECN.png";
+        // imgArr[1] = '1.png';
+        // imgArr[2] = "1.png";
+        //showImg(imgArr);
+        findImgByRoleId(roleId);
+    }
+
+    function findImgByRoleId(roleId) {
+        var portNumber = window.location.port;
+        var hostname = window.location.hostname;
+        var globalHost = hostname;
+        if (portNumber != '') globalHost += (":" + portNumber);
+        var formData = new FormData();
+        formData.append("roleId", roleId);
+        fetch("/picstore/findReasonImgByRoleId", {
+            method: "POST",
+            body: formData
+        })
+            .then(checkStatus)
+            .then(
+                response => {
+                    return response.json()
+                }
+            ).then(
+            response => {
+                var resultCode = response.resultCode;
+                if (resultCode == "0000") {
+                    var resultData = response.resultData;
+                    if (resultData != null) {
+                        var memoStr = resultData.memo;
+                        var imgArr = resultData.reasonImgList;
+                        document.getElementById('reasonStrBox').value = memoStr;
+                        showImg(imgArr);
+                    }
+                } else {
+                    alert(resultCode + "获取图片信息失败");
+                }
+
+            }).catch((error) => {
+            console.log('请求出错', error);
+        })
+    }
+
+    function checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        } else {
+            var error = new Error(response.statusText)
+            error.response = response
+            throw error
+        }
+    }
+
+    function parseJSON(response) {
+        return response.json()
+    }
+
+    function showImg(imgArr) {
+        if (imgArr != null) {
+            var smallImgDiv = document.getElementById('smallImgDiv');
+            smallImgDiv.innerHTML = "";
+            for (var i = 0; i < imgArr.length; i++) {
+                var thumbnail = document.createElement('div');
+                thumbnail.className = 'thumbnail';
+
+                // 创建图像元素
+                var img = document.createElement('img');
+                img.src = imgArr[i];
+
+                // 添加双击事件监听器
+                //thumbnail.ondblclick = function() {
+                //showImage(image.src);
+                //};
+
+                thumbnail.ondblclick = (function (picUrl) {
+                    return function () {
+                        showImage(picUrl);
+                        return false;
+                    };
+                })(imgArr[i]);
+
+                // 将图像元素添加到缩略图容器
+                thumbnail.appendChild(img);
+
+                // 将缩略图容器添加到父容器
+                smallImgDiv.appendChild(thumbnail);
+            }
+        }
+    }
+
+
+    function showImage(imageSrc) {
+        var modal = document.getElementById('modal');
+        var modalImage = document.getElementById('modal-image');
+
+        modalImage.src = imageSrc;
+        modal.style.display = 'block';
+    }
+
+    document.getElementById('modal').addEventListener('click', function () {
+        this.style.display = 'none';
+    });
+</script>
+</body>
+</html>

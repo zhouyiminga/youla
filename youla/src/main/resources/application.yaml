@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    active: test
+  application:
+    name: youla
+  datasource:
+    url: jdbc:mysql://localhost:3306/*?serverTimeZone=UTC
+    #url: jdbc:mysql://***:3305/***?serverTimeZone=UTC&characterEncoding=utf8
+    username: root
+    password: 111
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      max-lifetime: 60000
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  redis:
+    timeout: 5000
+    lettuce:
+      shutdown-timeout: 100
+    password: 111
+    port: 6378
+server:
+  tomcat:
+    max-http-form-post-size: -1
+  port: 6016
+baidu:
+  accessToken: 111
+alioss:
+  endpoint: 111
+  accessKeyId: 111
+  accessKeySecret: 111
+  bucketName: 111
+youpaiyun:
+  bucketName: 111
+  username: 111
+  password: 111
+youla:
+  youlaurl: http://localhost:6016
+  imgPrePath: H:\学习\临时垃圾文件夹
+  youPaiYunPre: https://youpaiyun.jichou.top
+  host: localhost:6016

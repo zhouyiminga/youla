@@ -1,0 +1,5 @@
+youpaiyuncallhost:
+fastdeployhost:
+spring:
+  redis:
+    host:

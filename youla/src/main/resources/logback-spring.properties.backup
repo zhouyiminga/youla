@@ -1,0 +1,25 @@
+# \u8BBE\u7F6E\u6839\u65E5\u5FD7\u7EA7\u522B
+logging.level.root=debug
+
+# \u63A7\u5236\u53F0\u8F93\u51FA\u7684\u683C\u5F0F
+logging.pattern.console=%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+
+# \u63A7\u5236\u53F0\u8F93\u51FA
+appender.console=ch.qos.logback.core.ConsoleAppender
+appender.console.layout=ch.qos.logback.classic.PatternLayout
+appender.console.layout.pattern=${logging.pattern.console}
+
+# \u5C06\u63A7\u5236\u53F0\u8F93\u51FA\u6DFB\u52A0\u5230\u6839\u65E5\u5FD7
+rootLogger.appenderRef.console.ref=console
+
+# \u6587\u4EF6\u8F93\u51FA\u7684\u683C\u5F0F
+logging.pattern.file=%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+
+# \u6587\u4EF6\u8F93\u51FA
+appender.file=ch.qos.logback.core.FileAppender
+appender.file.file=mylog.log
+appender.file.layout=ch.qos.logback.classic.PatternLayout
+appender.file.layout.pattern=${logging.pattern.file}
+
+# \u5C06\u6587\u4EF6\u8F93\u51FA\u6DFB\u52A0\u5230\u6839\u65E5\u5FD7
+rootLogger.appenderRef.file.ref=file

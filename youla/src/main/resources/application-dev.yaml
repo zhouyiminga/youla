@@ -1,0 +1,5 @@
+youpaiyuncallhost: https://jichou.top
+fastdeployhost: localhost
+spring:
+  redis:
+    host: localhost

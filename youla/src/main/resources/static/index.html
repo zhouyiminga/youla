@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>记仇|让互联网不会忘记</title>
+    <link rel="shortcut icon" href="/youla.png">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .top {
+            flex-grow: 1;
+            display: flex;
+        }
+
+        .left, .right {
+            flex-basis: 0;
+        }
+
+        .left {
+            flex-grow: 2;
+            background-color: lightblue;
+            display: flex;
+            justify-content: flex-end;
+            width: 200px;
+        }
+
+        .center {
+            background-color: lightgreen;
+            flex-basis: 210px;
+        }
+
+        .right {
+            flex-grow: 3;
+            background-color: lightyellow;
+        }
+
+        .bottom {
+            height: 20px;
+            background-color: white;
+        }
+
+        .img {
+            width: 50%;
+        }
+
+        .contentClass {
+            position: relative;
+            margin: 0 auto;
+            width: 100%;
+            height: 50%;
+            border: 1px solid black;
+            text-align: right;
+        }
+
+        .contentClass::after {
+            content: "在这粘贴截图";
+            color: #999999;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .imgbottom {
+            height: 25px;
+        }
+
+        .tebleClass{
+            margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top">
+        <div class="left"><!-- 内容区域 -->
+            <div class="img">
+                <div id="content" contenteditable="true" class="contentClass"></div>
+                <div class="imgbottom"><input type="file" id="uploadFile" onchange="handleFiles(this.files)">
+                    <input type="button" id="cleanFile" onclick="cleanImg()" value="清除图片">
+                </div>
+            </div>
+        </div>
+        <div class="center">
+            <div id="areaDiv">
+                选择跨区:<select id="areaSelect">
+                <option value="全部" selected="selected">全部</option>
+                <option value="跨1">跨1</option>
+                <option value="跨2">跨2</option>
+                <option value="跨3A">跨3A</option>
+                <option value="跨3B">跨3B</option>
+                <option value="跨4">跨4</option>
+                <option value="跨5">跨5</option>
+                <option value="跨6">跨6</option>
+                <option value="跨7">跨7</option>
+                <option value="跨8">跨8</option>
+            </select>
+                <input type="button" id="cleanTextBoxBtn" value="清空内容" onclick="cleanTextBox()">
+            </div>
+            <div>
+                <input type="text" id="textBox-0">
+                <span id='left1'>1</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-1">
+                <span id='left2'>2</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-2">
+                <span id='left3'>3</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-3">
+                <span id='left4'>4</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-4">
+                <span id='left5'>5</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-5">
+                <span id='left6'>6</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-6">
+                <span id='left7'>7</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-7">
+                <span id='left8'>8</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-8">
+                <span id='left9'>9</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-9">
+                <span id='left10'>10</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-10">
+                <span id='left11'>11</span>
+            </div>
+            <div>
+                <input type="text" id="textBox-11">
+                <span id='left12'>12</span>
+            </div>
+            <div>
+                <input id="searchroleNameBtn" type="button" value="按角色名称查询" onclick="commitSearch(1)">
+                <input id="searchParentNameBtn" type="button" value="按冒险团名称查询" onclick="commitSearch(2)">
+                <input id="searchAllBtn" type="button" value="查询全部" onclick="commitSearch(0)">
+            </div>
+        </div>
+        <div class="right">
+            <div class="tebleClass">
+                <table id="infoTable">
+                    <thead>
+                    <tr>
+                        <th>跨区</th>
+                        <th>小区</th>
+                        <th>职业</th>
+                        <th>冒险团及角色名称</th>
+                        <th>匹配情况</th>
+                        <th>记录理由</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    <!-- 动态添加的行将出现在这里 -->
+                    </tbody>
+                </table>
+                <div>
+                    <input id="prePageBtn" type="button" value="上一页" onclick="prePage()">
+                    <label id="pageLable"></label>
+                    <input id="nextPageBtn" type="button" value="下一页" onclick="nextPage()">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="bottom" style="text-align:center"><img width="250px" height="16px" src="youpaiyun_logo.png"
+                                                       onclick="window.open('https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral', '_blank');">
+    </div>
+</div>
+</body>
+<script type="text/javascript" language="javascript" charset="utf-8" src="index-min.js"></script>
+
+</html>
